@@ -9,6 +9,9 @@ function AddToCart() {
   const handleRemove = (ItemId) => {
     console.log(ItemId);
     dispatch(removeCart(ItemId));
+
+
+    // ***************
   };
 
   return (
