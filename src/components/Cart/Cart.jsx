@@ -2,15 +2,21 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addCart } from "../../CartSlice/CartSlice";
+import {PropagateLoader} from 'react-spinners'
+
+
 
 function Cart() {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true)
+  
 
   const fetchProducts = async () => {
     try {
       const res = await axios.get(`https://fakestoreapi.com/products`);
       setProducts(res.data); // Set products state to the array of products from API
+      setLoading(false)
     } catch (error) {
       console.log("Error:", error);
     }
@@ -27,7 +33,11 @@ function Cart() {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4 pt-24">
-        {products.map((data) => (
+        {
+          loading ?  <div className="mx-[620px] mt-[260px]">
+          <PropagateLoader color="#36d7b7" />
+        </div>
+          : products.map((data) => (
           <div
             key={data.id}
             className="bg-white border border-gray-200 rounded-lg shadow-lg mb-4 dark:bg-gray-800 dark:border-gray-700"
@@ -43,7 +53,7 @@ function Cart() {
               </h5>
               <div className="flex items-center justify-between">
                 <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                  ${data.price}
+                  {data.price}
                 </span>
                 <button
                   onClick={() => handleDispatch(data)}
@@ -60,5 +70,6 @@ function Cart() {
     </>
   );
 }
+// ****************
 
 export default Cart;
